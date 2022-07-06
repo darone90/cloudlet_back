@@ -28,3 +28,18 @@ export const sendActivationLink = async (link: string, id: string, userMail: str
         throw new Error('error during mail sending')
     }
 }
+
+export const sendResetLink = async (userMail: string, link: string): Promise<void> => {
+    const mail = {
+        from: 'developerdariusz@gmail.com',
+        to: `<${userMail}>`,
+        subject: 'Reset hasła do konta na portalu Chmurka',
+        text: `Link do resetu hasła: ${link} `
+    };
+    try {
+        await transporter.sendMail(mail)
+    } catch (err) {
+        console.log(err);
+        throw new Error('error during mail sending')
+    }
+}

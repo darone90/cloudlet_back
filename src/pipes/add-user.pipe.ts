@@ -19,21 +19,21 @@ export class NewUserDataConfirmAndHash implements PipeTransform<newUserDataSet, 
     async transform(data: newUserDataSet, metadata: ArgumentMetadata): Promise<databaseUserForm> {
 
         if (!data.email || !data.login || !data.password || !data.confirm) {
-            throw new Error('Incoming data are not complet.');
+            throw new Error('Przesłane dane są niekompletne');
         }
 
         if (data.email.length > 60 || data.email.length < 5 || data.login.length > 40 || data.login.length < 3 || data.password.length > 30 || data.password.length < 6) {
-            throw new Error('New User dataset validation error( some data have wrong length)');
+            throw new Error('Przesłane dane mają niepoprawną długość');
         }
 
         if (data.password !== data.confirm) {
-            throw new Error('Password confirm is different than password');
+            throw new Error('Hasło i potwierdzenie hasła są różne');
         }
 
         const userNameValid = await this.userService.checkValidLogin(data.login);
 
         if (!userNameValid) {
-            throw new Error('User with used login already existed, use different login name');
+            throw new Error('Istnieje już użytkownik o podanej nazwie, użyj innego loginu');
         }
 
         const link = passConfig.path + randomSigns(passConfig.linkLength);
