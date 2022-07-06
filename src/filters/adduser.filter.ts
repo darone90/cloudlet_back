@@ -9,7 +9,6 @@ export class NewUserValidationFilter implements ExceptionFilter {
         const outcome = exception instanceof HttpException
             ? { status: false, info: exception.getStatus() }
             : { status: false, info: (exception as Error).message };
-        console.log(outcome)
         response.json(
             outcome
         )

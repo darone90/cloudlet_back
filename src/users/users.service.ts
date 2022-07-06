@@ -3,7 +3,7 @@ import { databaseUserForm, Login } from 'src/types/user.type';
 import { UserEntity } from './users.entity';
 import { sendActivationLink } from 'src/utils/mail-sender';
 import { passConfig } from 'userpass.config';
-import { LoginData } from './dto/users.dto';
+import { LoginData, UserChange } from './dto/users.dto';
 import { comparer, hasher } from 'src/utils/crypto';
 import { UserResponse } from 'src/types/user.type';
 import { randomSigns } from 'src/utils/random-signs';
@@ -162,5 +162,53 @@ export class UsersService {
             status: true,
             info: 'hasło zostało zmienione'
         }
+    }
+
+    async userDataChange(data: UserChange, id: string): Promise<UserResponse> {
+
+        const result = await UserEntity.findOne({
+            where: {
+                id
+            }
+        })
+
+        const authentication = await comparer(data.password, result.password, result.iv, result.salt);
+
+        if (authentication) {
+            if (data.type === 'login') {
+                result.login = data.change
+            }
+
+            if (data.type === 'email') {
+                result.email = data.change
+            }
+
+            if (data.type === 'password') {
+                const newPass = await hasher(data.change, result.salt);
+                result.password = newPass.coded;
+                result.iv = newPass.iv;
+            }
+
+            await result.save();
+            return {
+                status: true,
+                info: 'data changed'
+            }
+        } else {
+            return {
+                status: false,
+                info: 'niepoparwne hasło'
+            }
+        }
+    }
+
+    async deleteUser(id: string): Promise<void> {
+        const result = await UserEntity.findOne({
+            where: {
+                id,
+            }
+        })
+
+        result.remove();
     }
 }

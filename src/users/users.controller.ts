@@ -1,11 +1,18 @@
-import { Body, Controller, Delete, Get, Inject, Param, Patch, Post, Put, UseFilters, UseGuards, UsePipes, } from '@nestjs/common';
-import { UserResponse, Login } from 'src/types/user.type';
+import { Body, Controller, Delete, Get, Inject, Param, Patch, Post, Put, UseFilters, UseGuards, UsePipes, Headers } from '@nestjs/common';
+
 import { UsersService } from './users.service';
+
 import { NewUserDataConfirmAndHash } from 'src/pipes/add-user.pipe';
+import { ResetPasswordVaildationPipe } from 'src/pipes/reset-validation.pipe';
+import { UserDataChangeValidationPipe } from 'src/pipes/data-change-validation.pipe';
+
+import { NewUserValidationFilter } from '../filters/adduser.filter';
+import { DataChangeExceptionFilter } from 'src/filters/changeuser.filter';
+
+import { UserResponse, Login } from 'src/types/user.type';
 import { databaseUserForm } from 'src/types/user.type';
 import { LoginData, PasswordResetData, UserChange } from './dto/users.dto';
-import { NewUserValidationFilter } from '../filters/adduser.filter';
-import { ResetPasswordVaildationPipe } from 'src/pipes/reset-validation.pipe';
+
 import { AuthGuard } from 'src/guards/authentication.guard';
 
 
@@ -147,14 +154,25 @@ export class UsersController {
     }
 
     @Patch('/change')
+    @UseGuards(AuthGuard)
+    @UsePipes(UserDataChangeValidationPipe)
+    @UseFilters(new DataChangeExceptionFilter())
     async changeUserData(
-        @Body() data: UserChange
+        @Body() data: UserChange,
+        @Headers() headers: any
     ) {
-        console.log(data)
-        return {
-            status: true,
-            info: 'ok'
+        try {
+            const key = headers.token as string
+            const response = await this.userService.userDataChange(data, key)
+            return response
+        } catch (err) {
+            console.log(err)
+            return {
+                status: false,
+                info: 'Wystąpił błąd podaczas zmiany danych... '
+            }
         }
+
     }
 
     @Delete('/change/:id')
@@ -162,10 +180,17 @@ export class UsersController {
     async deleteUser(
         @Param('id') id: string
     ) {
-        console.log(id)
-        return {
-            status: true,
-            info: 'ok'
+        try {
+            await this.userService.deleteUser(id);
+            return {
+                status: true,
+                info: 'ok'
+            }
+        } catch (err) {
+            return {
+                status: false,
+                info: 'Wystąpił problem w trakcie usuwania... '
+            }
         }
     }
 }
