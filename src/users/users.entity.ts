@@ -1,4 +1,5 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { NotesEntity } from 'src/notes/notes.entity';
 
 
 @Entity()
@@ -39,4 +40,8 @@ export class UserEntity extends BaseEntity {
 
     @Column()
     activationLink: string | null;
+
+    @OneToMany(() => NotesEntity, (notes) => notes.user)
+    notes: NotesEntity[];
+
 }

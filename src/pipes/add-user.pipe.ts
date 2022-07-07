@@ -1,4 +1,4 @@
-import { PipeTransform, Injectable, ArgumentMetadata, BadRequestException, Inject } from '@nestjs/common';
+import { PipeTransform, Injectable, ArgumentMetadata, Inject } from '@nestjs/common';
 import { newUserDataSet } from 'src/users/dto/users.dto';
 import { databaseUserForm } from 'src/types/user.type';
 
