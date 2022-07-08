@@ -206,9 +206,14 @@ export class UsersService {
         const result = await UserEntity.findOne({
             where: {
                 id,
+            },
+            relations: {
+                notes: true
             }
+
         })
 
+        result.notes.forEach(async (note) => await note.remove())
         result.remove();
     }
 }

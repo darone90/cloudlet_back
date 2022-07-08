@@ -19,10 +19,7 @@ export class NotesService {
         if (note.startDate) record.startDate = note.startDate;
         if (note.endDate) record.endDate = note.endDate;
         record.delete = note.delete;
-        if (note.email) {
-            record.email = note.email
-            // tu dodać CRON
-        };
+        record.email = note.email;
         record.create = note.create;
 
         const user = await UserEntity.findOne({
@@ -36,7 +33,7 @@ export class NotesService {
 
         const response = {
             status: true,
-            info: 'ok'
+            info: record.id
         }
 
         return response

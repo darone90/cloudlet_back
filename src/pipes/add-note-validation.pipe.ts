@@ -19,6 +19,10 @@ export class NewNoteDataValidation implements PipeTransform<Note, Note> {
             throw new NotAcceptableException(Error, 'Za długi opis ( max 5000 znaków )')
         };
 
+        if (data.delete === true && data.endDate === '') {
+            throw new NotAcceptableException(Error, 'Nie można ustawić autousuwania bez podania daty zakończenia ewentu')
+        };
+
         return data;
     }
 }
