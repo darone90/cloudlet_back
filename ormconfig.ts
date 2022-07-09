@@ -1,14 +1,16 @@
+import { database } from "userpass.config"
+
 export const databaseConfig = {
-    type: 'mysql',
-    host: 'localhost',
-    port: 3306,
-    username: 'root',
-    password: '',
-    database: 'cloudlet',
+    type: database.type,
+    host: database.host,
+    port: database.port,
+    username: database.username,
+    password: database.password,
+    database: database.database,
     entities: ['dist/**/**.entity{.ts,.js}'],
     bigNumberStrings: false,
     logging: false,
-    synchronize: true,
+    synchronize: false,
     migrations: ['dist/migration/*.js'],
     cli: {
         migrationsDir: 'mir'

@@ -36,7 +36,7 @@ export class NewUserDataConfirmAndHash implements PipeTransform<newUserDataSet, 
             throw new Error('Istnieje już użytkownik o podanej nazwie, użyj innego loginu');
         }
 
-        const link = passConfig.path + randomSigns(passConfig.linkLength);
+        const link = passConfig.activationPath + randomSigns(passConfig.linkLength);
         const salt = randomSigns(passConfig.saltLength);
         const hashedPassword = await hasher(data.password, salt);
 

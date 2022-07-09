@@ -113,7 +113,7 @@ export class UsersService {
         }
 
         result.activationLink = randomSigns(30);
-        await sendResetLink(result.email, `http://localhost:3000/reset/${result.activationLink}`)
+        await sendResetLink(result.email, `${passConfig.frontEndAddress}/reset/${result.activationLink}`)
         await result.save();
 
         return {
@@ -208,12 +208,14 @@ export class UsersService {
                 id,
             },
             relations: {
-                notes: true
+                notes: true,
+                files: true
             }
 
         })
 
-        result.notes.forEach(async (note) => await note.remove())
+        result.notes.forEach(async (note) => await note.remove());
+        result.files.forEach(async (file) => await file.remove());
         result.remove();
     }
 }
