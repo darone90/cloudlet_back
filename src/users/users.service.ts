@@ -44,7 +44,7 @@ export class UsersService {
     async userActivation(code: string): Promise<boolean> {
         const result = await UserEntity.findOne({
             where: {
-                activationLink: passConfig.path + code
+                activationLink: passConfig.activationPath + code
             }
         })
         if (!result) {
