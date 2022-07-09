@@ -1,5 +1,6 @@
 import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { NotesEntity } from 'src/notes/notes.entity';
+import { FileEntity } from 'src/files/files.entity';
 
 
 @Entity()
@@ -43,5 +44,8 @@ export class UserEntity extends BaseEntity {
 
     @OneToMany(() => NotesEntity, (notes) => notes.user)
     notes: NotesEntity[];
+
+    @OneToMany(() => FileEntity, (files) => files.user)
+    files: FileEntity[]
 
 }
