@@ -7,12 +7,9 @@ export const databaseConfig = {
     username: database.username,
     password: database.password,
     database: database.database,
-    entities: ['dist/**/**.entity{.ts,.js}'],
+    entities: ['**/**.entity{.ts,.js}'],
     bigNumberStrings: false,
     logging: false,
     synchronize: false,
     migrations: ['dist/migration/*.js'],
-    cli: {
-        migrationsDir: 'mir'
-    }
 }
