@@ -1,0 +1,6 @@
+W celu uruchomienia wersji produkcyjnej, przed uruchomieniem skryptu npm run build należy zmienić 
+ścieżkę w entities ormconfig.ts 
+
+wersja developerska entities: ['dist/**/**.entity{.ts,.js}'],
+
+wersja produkcyjna entities: ['/**/**.entity{.ts,.js}'],
