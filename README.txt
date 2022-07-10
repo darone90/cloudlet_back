@@ -38,6 +38,14 @@ next you need to fill database params:
     password: password for your database,
     database: name of the database,
 
+VERY IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+If you want to use develeoper server (nest start or npm run start:dev) in ormconfig you need to set entities: ['dist/**/**.entity{.ts,.js}'],
+using prod versio, before build set entities: ['**/**.entity{.ts,.js}'],
+
+------------------------------------------------------------------------------------->
+
+
 After fill in userpass.config.ts you can run the app
 
 App use CRON and email services to contact with user.
