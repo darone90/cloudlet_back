@@ -9,6 +9,9 @@ import { UserResponse } from 'src/types/user.type';
 import { randomSigns } from 'src/utils/random-signs';
 import { PasswordResetData } from './dto/users.dto';
 import { sendResetLink } from 'src/utils/mail-sender';
+import * as path from 'path';
+import { unlink } from 'fs/promises';
+import { destionation } from 'src/multer/multer.storage';
 
 @Injectable()
 export class UsersService {
@@ -215,7 +218,16 @@ export class UsersService {
         })
 
         result.notes.forEach(async (note) => await note.remove());
-        result.files.forEach(async (file) => await file.remove());
-        result.remove();
+        result.files.forEach(async (file) => {
+            await unlink(path.join(destionation(), file.name))
+            await file.remove()
+        });
+
+        const freeUser = await UserEntity.findOne({
+            where: {
+                id,
+            }
+        })
+        await freeUser.remove()
     }
 }

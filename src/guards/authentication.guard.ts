@@ -1,6 +1,5 @@
 import { Injectable, CanActivate, ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { UserEntity } from 'src/users/users.entity';
-import { SetMetadata } from '@nestjs/common';
 
 
 @Injectable()
@@ -13,18 +12,17 @@ export class AuthGuard implements CanActivate {
         const key = request.headers.token;
         const name = request.headers.name;
 
-
+        const decoded = decodeURIComponent(name)
 
         const result = await UserEntity.findOne({
             where: {
                 id: key,
-                login: name
+                login: decoded
             }
         })
 
         if (result) return true;
         throw new UnauthorizedException();
-        SetMetadata('userToken', key);
         return false;
     }
 }
