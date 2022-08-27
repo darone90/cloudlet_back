@@ -1,73 +1,130 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# Backend application for Cloudlet service
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+This application is an integral part of service ,,Cloudlet" Program handle connections between database and front-end, validate incoming data, sending reminding, registration, and password reset emails. Also takes care for logging in procedures and uploading/downloading/store files. All code is in Nest.js framework.
 
-## Description
+## Program parts
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### User controller
 
-## Installation
+This part of application takes care about all procedures related with user. Using this endpoints you can login or logout, change or reset password, make new account and activate it.
 
-```bash
-$ npm install
-```
+### Files controller
 
-## Running the app
+Using this part you can easily upload or download a files or photos
 
-```bash
-# development
-$ npm run start
+### Notes controller
 
-# watch mode
-$ npm run start:dev
+Adding notes, saves reminders in calendar, edit/removing notes
 
-# production mode
-$ npm run start:prod
-```
+### CRON
 
-## Test
+Cleaning database from inactivated users, sending reminding emails
 
-```bash
-# unit tests
-$ npm run test
+## Frontend
 
-# e2e tests
-$ npm run test:e2e
+This app is inseparably part of Cloudlet service. Front-end you can find in my repository:
 
-# test coverage
-$ npm run test:cov
-```
+https://github.com/darone90/cloudlet_front
 
-## Support
+##  Technology
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Cloudlet backend was made with Nest.js framework and TypeScript
 
-## Stay in touch
+Additional packages:
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- mysql2
 
-## License
+- bcrypt
 
-Nest is [MIT licensed](LICENSE).
+- nodemailer
+
+- typeorm
+
+Application use mySql database MariaDB
+
+## How to start ?
+
+### Package installing
+
+After cloning repository you need to install all required packages. For example using npm:
+
+-npm install
+
+### Adjust safety parameters
+
+Before start please fill in the fields in userPass.config.ts:
+
+- password: Password for hashing users password (string of characters),
+
+- algorithm: algorithm for coding password (for example aes-192-cbc),
+
+- iterations: number of iterations in hashing,
+
+- saltLength: length of salt for hashing,
+
+- linkLength: length of activation code in activation link,
+
+- activationPath: direct address to a backend server,
+
+### Adjust mail client data
+
+- mailCli: your mail cli,
+
+- mailPass: password for mail cli,
+
+- mailService: name of service of your mail cli,
+
+### Adjusting space for each user
+
+- freeSpaceForFoto: how many bites you give for each user files in server,
+
+- freeSpaceForFiles: how many bites you give for each user photos in server,
+
+### Adjusting database connection
+
+- type: type od database (for example mySql),
+
+- host: name of the host of database,
+
+- port: port of database,
+
+- username: username for your database,
+
+- password: password for your database,
+
+- database: name of the database,
+
+### Adding frontend address
+
+- frontEndAddress: address of frontend app,
+
+### Install Nest.js
+
+to start developer server or to make build version you need nest.js installed globally
+
+### Start develop server
+
+Use commend:
+
+- nest start --watch // with watch mode
+
+### Make production version
+
+Use command:
+
+- nest build
+
+## Very important!
+
+If you want to use develop server (nest start or npm run start:dev) in ormconfig you need to set entities: ['dist/**/**.entity{.ts,.js}'],
+
+using production version, before build set entities: ['**/**.entity{.ts,.js}'],
+
+## Contact
+
+If you want to reach me use my email: pileckidariusz90@gmail.com
+
+## Copyrights
+
+All data in this repository are free to use for everyone

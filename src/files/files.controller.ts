@@ -1,4 +1,4 @@
-import { Controller, Post, UploadedFiles, UseGuards, UseInterceptors, Headers, Inject, Body, Get, Delete, Param, UsePipes, Res } from '@nestjs/common';
+import { Controller, Post, UploadedFiles, UseGuards, UseInterceptors, Headers, Inject, Body, Get, Delete, Param, Res } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { destionation } from 'src/multer/multer.storage';
 import { UploadeFileMulter } from 'src/types/files.type';
